@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Holy Quran Surahs</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:'Poppins',sans-serif;
+      background:linear-gradient(to bottom,#02130f,#052e2b,#02130f);
+      color:white;
+      overflow-x:hidden;
+      min-height:100vh;
+    }
+
+    .stars{
+      position:fixed;
+      width:100%;
+      height:100%;
+      background:url('https://www.transparenttextures.com/patterns/stardust.png');
+      opacity:0.2;
+      z-index:-1;
+      animation:moveStars 40s linear infinite;
+    }
+
+    @keyframes moveStars{
+      from{transform:translateY(0);}
+      to{transform:translateY(-200px);}
+    }
+
+    .navbar{
+      position:sticky;
+      top:0;
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:20px 8%;
+      background:rgba(0,0,0,0.25);
+      backdrop-filter:blur(12px);
+      z-index:999;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .logo{
+      color:#f5d68a;
+      font-size:1.3rem;
+      font-weight:700;
+    }
+
+    .nav-links{
+      display:flex;
+      gap:30px;
+    }
+
+    .nav-links a{
+      text-decoration:none;
+      color:white;
+      transition:0.3s;
+      font-weight:500;
+    }
+
+    .nav-links a:hover{
+      color:#f5d68a;
+    }
+
+    .hero{
+      text-align:center;
+      padding:90px 20px 60px;
+      position:relative;
+    }
+
+    .hero h1{
+      font-size:4rem;
+      color:#f5d68a;
+      margin-bottom:15px;
+    }
+
+    .hero p{
+      color:#ddd;
+      font-size:1.1rem;
+    }
+
+    .moon{
+      width:130px;
+      height:130px;
+      border-radius:50%;
+      background:radial-gradient(circle,#f5d68a,#d4a93f);
+      margin:0 auto 30px;
+      box-shadow:0 0 60px rgba(245,214,138,0.5);
+      animation:float 4s ease-in-out infinite;
+    }
+
+    @keyframes float{
+      0%{transform:translateY(0px);} 
+      50%{transform:translateY(-15px);} 
+      100%{transform:translateY(0px);} 
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:25px;
+      padding:40px;
+      max-width:1200px;
+      margin:auto;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.08);
+      backdrop-filter:blur(10px);
+      padding:30px;
+      border-radius:25px;
+      text-align:center;
+      cursor:pointer;
+      transition:0.5s;
+      box-shadow:0 0 20px rgba(0,0,0,0.3);
+    }
+
+    .card:hover{
+      transform:translateY(-10px) scale(1.03);
+      box-shadow:0 0 30px rgba(245,214,138,0.25);
+    }
+
+    .card h2{
+      color:#f5d68a;
+      margin-bottom:10px;
+    }
+
+    .surah-section{
+      display:none;
+      max-width:1000px;
+      margin:40px auto;
+      padding:30px;
+      background:rgba(255,255,255,0.05);
+      border-radius:25px;
+      border:1px solid rgba(255,255,255,0.08);
+      animation:fade 0.6s ease;
+    }
+
+    @keyframes fade{
+      from{
+        opacity:0;
+        transform:translateY(20px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    .top-bar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:30px;
+      flex-wrap:wrap;
+      gap:15px;
+    }
+
+    .top-bar h2{
+      color:#f5d68a;
+    }
+
+    button{
+      padding:10px 18px;
+      border:none;
+      border-radius:12px;
+      background:#f5d68a;
+      color:#02130f;
+      font-weight:600;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    button:hover{
+      transform:scale(1.05);
+    }
+
+    .arabic{
+      font-family:'Amiri',serif;
+      font-size:2.4rem;
+      line-height:3;
+      text-align:right;
+      direction:rtl;
+      color:#fff;
+      background:rgba(255,255,255,0.04);
+      padding:40px;
+      border-radius:25px;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .arabic span{
+      display:inline-block;
+      margin:8px;
+      padding:6px 12px;
+      border-radius:12px;
+      transition:0.3s;
+      cursor:pointer;
+    }
+
+    .arabic span:hover{
+      background:rgba(245,214,138,0.15);
+      color:#f5d68a;
+      transform:scale(1.03);
+    }
+
+    .english{
+      display:none;
+      font-size:1.1rem;
+      line-height:2;
+      color:#e7e7e7;
+    }
+
+    .bismillah{
+      text-align:center;
+      color:#f5d68a;
+      margin-bottom:25px;
+      font-size:2rem;
+      font-family:'Amiri',serif;
+    }
+
+    .back-btn{
+      margin-top:30px;
+    }
+
+    footer{
+      text-align:center;
+      padding:40px 20px;
+      color:#aaa;
+    }
+
+    @media(max-width:768px){
+
+      .navbar{
+        padding:18px 6%;
+      }
+
+      .hero h1{
+        font-size:2.5rem;
+      }
+
+      .nav-links{
+        gap:18px;
+      }
+
+      .arabic{
+        font-size:1.8rem;
+        line-height:2.5;
+        padding:25px;
+      }
+
+    }
+
+      .arabic{
+        font-size:1.5rem;
+      }
+
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="stars"></div>
+
+<nav class="navbar">
+  <div class="logo">☪ Noor-ul-Quran</div>
+
+  <div class="nav-links">
+    <a href="#" onclick="goBack()">Home</a>
+    <a href="#homeCards">Surahs</a>
+  </div>
+</nav>
+
+<header class="hero">
+
+  <div class="moon"></div>
+
+  <h1>Read Quran Peacefully</h1>
+
+  <p>
+    Surah Ar-Rahman • Surah Yaseen • Surah Al-Waqi'ah • Surah Al-Mulk
+  </p>
+
+</header>
+
+<section class="cards" id="homeCards">
+
+  <div class="card" onclick="openSurah('rahman')">
+    <h2>Surah Ar-Rahman</h2>
+    <p>The Most Merciful</p>
+  </div>
+
+  <div class="card" onclick="openSurah('yaseen')">
+    <h2>Surah Yaseen</h2>
+    <p>Heart of the Quran</p>
+  </div>
+
+  <div class="card" onclick="openSurah('waqiah')">
+    <h2>Surah Al-Waqi'ah</h2>
+    <p>The Inevitable Event</p>
+  </div>
+
+  <div class="card" onclick="openSurah('mulk')">
+    <h2>Surah Al-Mulk</h2>
+    <p>The Kingdom</p>
+  </div>
+
+</section>
+
+<!-- SURAH RAHMAN -->
+<section class="surah-section" id="rahman">
+
+  <div class="top-bar">
+    <h2>Surah Ar-Rahman</h2>
+    <button onclick="toggleLanguage('rahman')">English Translation</button>
+  </div>
+
+  <div class="bismillah">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِیْمِ</div>
+
+<div class="arabic">
+  <span>اَلرَّحْمٰنُۙ (1)</span>
+  <span>عَلَّمَ الْقُرْاٰنَﭤ(2)</span>
+  <span>خَلَقَ الْاِنْسَانَۙ (3)</span>
+  <span>عَلَّمَهُ الْبَیَانَ(4)</span>
+  <span>اَلشَّمْسُ وَ الْقَمَرُ بِحُسْبَانٍۙ (5)</span>
+  <span>وَّ النَّجْمُ وَ الشَّجَرُ یَسْجُدٰنِ(6)</span>
+  <span>وَ السَّمَآءَ رَفَعَهَا وَ وَضَعَ الْمِیْزَانَۙ (7)</span>
+  <span>اَلَّا تَطْغَوْا فِی الْمِیْزَانِ(8)</span>
+  <span>وَ اَقِیْمُوا الْوَزْنَ بِالْقِسْطِ وَ لَا تُخْسِرُوا الْمِیْزَانَ(9)</span>
+  <span>وَ الْاَرْضَ وَ ضَعَهَا لِلْاَنَامِۙ (10)</span>
+  <span>فِیْهَا فَاكِهَةٌ ﭪ--وَّ النَّخْلُ ذَاتُ الْاَكْمَامِۖ (11)</span>
+  <span>وَ الْحَبُّ ذُو الْعَصْفِ وَ الرَّیْحَانُۚ (12)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(13)</span>
+  <span>خَلَقَ الْاِنْسَانَ مِنْ صَلْصَالٍ كَالْفَخَّارِۙ (14)</span>
+  <span>وَ خَلَقَ الْجَآنَّ مِنْ مَّارِجٍ مِّنْ نَّارٍۚ (15)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(16)</span>
+  <span>رَبُّ الْمَشْرِقَیْنِ وَ رَبُّ الْمَغْرِبَیْنِۚ (17)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(18)</span>
+  <span>مَرَجَ الْبَحْرَیْنِ یَلْتَقِیٰنِۙ (19)</span>
+  <span>بَیْنَهُمَا بَرْزَخٌ لَّا یَبْغِیٰنِۚ (20)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(21)</span>
+  <span>یَخْرُ جُ مِنْهُمَا اللُّؤْلُؤُ وَ الْمَرْجَانُۚ (22)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(23)</span>
+  <span>وَ لَهُ الْجَوَارِ الْمُنْشَــٴٰـتُ فِی الْبَحْرِ كَالْاَعْلَامِۚ (24)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ۠ ٜ (25)</span>
+  <span>كُلُّ مَنْ عَلَیْهَا فَانٍﭕ(26)</span>
+  <span>وَّ یَبْقٰى وَجْهُ رَبِّكَ ذُو الْجَلٰلِ وَ الْاِكْرَامِۚ (27)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(28)</span>
+  <span>یَسْــٴَـلُهٗ مَنْ فِی السَّمٰوٰتِ وَ الْاَرْضِؕ كُلَّ یَوْمٍ هُوَ فِیْ شَاْنٍۚ (29)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(30)</span>
+  <span>سَنَفْرُغُ لَكُمْ اَیُّهَ الثَّقَلٰنِۚ (31)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(32)</span>
+  <span>یٰمَعْشَرَ الْجِنِّ وَ الْاِنْسِ اِنِ اسْتَطَعْتُمْ اَنْ تَنْفُذُوْا مِنْ اَقْطَارِ السَّمٰوٰتِ وَ الْاَرْضِ فَانْفُذُوْاؕ لَا تَنْفُذُوْنَ اِلَّا بِسُلْطٰنٍۚ (33)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(34)</span>
+  <span>یُرْسَلُ عَلَیْكُمَا شُوَاظٌ مِّنْ نَّارٍ وَّ نُحَاسٌ فَلَا تَنْتَصِرٰنِۚ (35)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(36)</span>
+  <span>فَاِذَا انْشَقَّتِ السَّمَآءُ فَكَانَتْ وَرْدَةً كَالدِّهَانِۚ (37)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(38)</span>
+  <span>فَیَوْمَىٕذٍ لَّا یُسْــٴَـلُ عَنْ ذَنْۢبِهٖۤ اِنْسٌ وَّ لَا جَآنٌّۚ (39)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(40)</span>
+  <span>یُعْرَفُ الْمُجْرِمُوْنَ بِسِیْمٰىهُمْ فَیُؤْخَذُ بِالنَّوَاصِیْ وَ الْاَقْدَامِۚ (41)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(42)</span>
+  <span>هٰذِهٖ جَهَنَّمُ الَّتِیْ یُكَذِّبُ بِهَا الْمُجْرِمُوْنَﭥ(43)</span>
+  <span>یَطُوْفُوْنَ بَیْنَهَا وَ بَیْنَ حَمِیْمٍ اٰنٍۚ (44)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ۠ (45)</span>
+  <span>وَ لِمَنْ خَافَ مَقَامَ رَبِّهٖ جَنَّتٰنِۚ (46)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِۙ (47)</span>
+  <span>ذَوَاتَاۤ اَفْنَانٍۚ (48)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(49)</span>
+  <span>فِیْهِمَا عَیْنٰنِ تَجْرِیٰنِۚ (50)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(51)</span>
+  <span>فِیْهِمَا مِنْ كُلِّ فَاكِهَةٍ زَوْجٰنِۚ (52)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(53)</span>
+  <span>مُتَّكِـٕیْنَ عَلٰى فُرُشٍۭ بَطَآىٕنُهَا مِنْ اِسْتَبْرَقٍؕ وَ جَنَا الْجَنَّتَیْنِ دَانٍۚ (54)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(55)</span>
+  <span>فِیْهِنَّ قٰصِرٰتُ الطَّرْفِۙ لَمْ یَطْمِثْهُنَّ اِنْسٌ قَبْلَهُمْ وَ لَا جَآنٌّۚ (56)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(57)</span>
+  <span>كَاَنَّهُنَّ الْیَاقُوْتُ وَ الْمَرْجَانُۚ (58)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(59)</span>
+  <span>هَلْ جَزَآءُ الْاِحْسَانِ اِلَّا الْاِحْسَانُۚ (60)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(61)</span>
+  <span>وَ مِنْ دُوْنِهِمَا جَنَّتٰنِۚ (62)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِۙ (63)</span>
+  <span>مُدْهَآ مَّتٰنِۚ (64)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِۚ (65)</span>
+  <span>فِیْهِمَا عَیْنٰنِ نَضَّاخَتٰنِۚ (66)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(67)</span>
+  <span>فِیْهِمَا فَاكِهَةٌ وَّ نَخْلٌ وَّ رُمَّانٌۚ (68)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِۚ (69)</span>
+  <span>فِیْهِنَّ خَیْرٰتٌ حِسَانٌۚ (70)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِۚ (71)</span>
+  <span>حُوْرٌ مَّقْصُوْرٰتٌ فِی الْخِیَامِۚ (72)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِۚ (73)</span>
+  <span>لَمْ یَطْمِثْهُنَّ اِنْسٌ قَبْلَهُمْ وَ لَا جَآنٌّۚ (74)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِۚ (75)</span>
+  <span>مُتَّكِـٕیْنَ عَلٰى رَفْرَفٍ خُضْرٍ وَّ عَبْقَرِیٍّ حِسَانٍۚ (76)</span>
+  <span>فَبِاَیِّ اٰلَآءِ رَبِّكُمَا تُكَذِّبٰنِ(77)</span>
+  <span>تَبٰرَكَ اسْمُ رَبِّكَ ذِی الْجَلٰلِ وَ الْاِكْرَامِ۠ (78)</span>
+</div>
+
+<!--English Translation-->
+
+<div class="english">
+
+  <span>(1) The Most Compassionate.</span>
+
+  <span>(2) taught the Quran,</span>
+
+  <span>(3) created humanity,</span>
+
+  <span>(4) ˹and˺ taught them speech.</span>
+
+  <span>(5) The sun and the moon ˹travel˺ with precision.</span>
+
+  <span>(6) The stars and the trees bow down ˹in submission˺.</span>
+
+  <span>(7) As for the sky, He raised it ˹high˺, and set the balance ˹of justice˺</span>
+
+  <span>(8) so that you do not defraud the scales.</span>
+
+  <span>(9) Weigh with justice, and do not give short measure.</span>
+
+  <span>(10) He laid out the earth for all beings.</span>
+
+  <span>(11) In it are fruit, palm trees with date stalks,</span>
+
+  <span>(12) and grain with husks, and aromatic plants.</span>
+
+  <span>(13) Then which of your Lord’s favours will you ˹humans and jinn˺ both deny?</span>
+
+  <span>(14) He created humankind from ˹sounding˺ clay like pottery,</span>
+
+  <span>(15) and created jinn from a ˹smokeless˺ flame of fire.</span>
+
+  <span>(16) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(17) ˹He is˺ Lord of the two easts and the two wests.</span>
+
+  <span>(18) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(19) He merges the two bodies of ˹fresh and salt˺ water,</span>
+
+  <span>(20) yet between them is a barrier they never cross.</span>
+
+  <span>(21) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(22) Out of both ˹waters˺ come forth pearls and coral.</span>
+
+  <span>(23) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(24) To Him belong the ships with raised sails, sailing through the seas like mountains.</span>
+
+  <span>(25) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(26) Every being on earth is bound to perish.</span>
+
+  <span>(27) Only your Lord Himself, full of Majesty and Honour, will remain ˹forever˺.</span>
+
+  <span>(28) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(29) All those in the heavens and the earth are dependent on Him. Day in and day out He has something to bring about.</span>
+
+  <span>(30) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(31) We will soon attend to you ˹for judgment˺, O two multitudes ˹of jinn and humans˺!</span>
+
+  <span>(32) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(33) O assembly of jinn and humans! If you can penetrate beyond the realms of the heavens and the earth, then do so. ˹But˺ you cannot do that without ˹Our˺ authority.</span>
+
+  <span>(34) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(35) Flames of fire and ˹molten˺ copper will be sent against you, and you will not be able to defend one another.</span>
+
+  <span>(36) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(37) ˹How horrible will it be˺ when the heavens will split apart, becoming rose-red like ˹burnt˺ oil!</span>
+
+  <span>(38) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(39) On that Day there will be no need for any human or jinn to be asked about their sins.</span>
+
+  <span>(40) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(41) The wicked will be recognized by their appearance, then will be seized by ˹their˺ forelocks and feet.</span>
+
+  <span>(42) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(43) ˹They will be told,˺ “This is the Hell which the wicked denied.”</span>
+
+  <span>(44) They will alternate between its flames and scalding water.</span>
+
+  <span>(45) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(46) And whoever is in awe of standing before their Lord will have two Gardens.</span>
+
+  <span>(47) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(48) ˹Both will be˺ with lush branches.</span>
+
+  <span>(49) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(50) In each ˹Garden˺ will be two flowing springs.</span>
+
+  <span>(51) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(52) In each will be two types of every fruit.</span>
+
+  <span>(53) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(54) Those ˹believers˺ will recline on furnishings lined with rich brocade. And the fruit of both Gardens will hang within reach.</span>
+
+  <span>(55) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(56) In both ˹Gardens˺ will be maidens of modest gaze, who no human or jinn has ever touched before.</span>
+
+  <span>(57) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(58) Those ˹maidens˺ will be ˹as elegant˺ as rubies and coral.</span>
+
+  <span>(59) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(60) Is there any reward for goodness except goodness?</span>
+
+  <span>(61) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(62) And below these two ˹Gardens˺ will be two others.</span>
+
+  <span>(63) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(64) Both will be dark green.</span>
+
+  <span>(65) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(66) In each will be two gushing springs.</span>
+
+  <span>(67) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(68) In both will be fruit, palm trees, and pomegranates.</span>
+
+  <span>(69) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(70) In all Gardens will be noble, pleasant mates.</span>
+
+  <span>(71) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(72) ˹They will be˺ maidens with gorgeous eyes, reserved in pavilions.</span>
+
+  <span>(73) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(74) No human or jinn has ever touched these ˹maidens˺ before.</span>
+
+  <span>(75) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(76) All ˹believers˺ will be reclining on green cushions and splendid carpets.</span>
+
+  <span>(77) Then which of your Lord’s favours will you both deny?</span>
+
+  <span>(78) Blessed is the Name of your Lord, full of Majesty and Honour.</span>
+
+</div>
+  <button class="back-btn" onclick="goBack()">← Back Home</button>
+
+</section>
+
+<!-- SURAH YASEEN -->
+<section class="surah-section" id="yaseen">
+
+  <div class="top-bar">
+    <h2>Surah Yaseen</h2>
+    <button onclick="toggleLanguage('yaseen')">English Translation</button>
+  </div>
+
+  <div class="bismillah">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِیْمِ</div>
+
+<div class="arabic">
+  <span>یٰسٓۚ (1)</span>
+  <span>وَ الْقُرْاٰنِ الْحَكِیْمِۙ (2)</span>
+  <span>اِنَّكَ لَمِنَ الْمُرْسَلِیْنَۙ (3)</span>
+  <span>عَلٰى صِرَاطٍ مُّسْتَقِیْمٍﭤ(4)</span>
+  <span>تَنْزِیْلَ الْعَزِیْزِ الرَّحِیْمِۙ (5)</span>
+  <span>لِتُنْذِرَ قَوْمًا مَّاۤ اُنْذِرَ اٰبَآؤُهُمْ فَهُمْ غٰفِلُوْنَ(6)</span>
+  <span>لَقَدْ حَقَّ الْقَوْلُ عَلٰۤى اَكْثَرِهِمْ فَهُمْ لَا یُؤْمِنُوْنَ(7)</span>
+  <span>اِنَّا جَعَلْنَا فِیْۤ اَعْنَاقِهِمْ اَغْلٰلًا فَهِیَ اِلَى الْاَذْقَانِ فَهُمْ مُّقْمَحُوْنَ(8)</span>
+  <span>وَ جَعَلْنَا مِنْۢ بَیْنِ اَیْدِیْهِمْ سَدًّا وَّ مِنْ خَلْفِهِمْ سَدًّا فَاَغْشَیْنٰهُمْ فَهُمْ لَا یُبْصِرُوْنَ(9)</span>
+  <span>وَ سَوَآءٌ عَلَیْهِمْ ءَاَنْذَرْتَهُمْ اَمْ لَمْ تُنْذِرْهُمْ لَا یُؤْمِنُوْنَ(10)</span>
+  <span>اِنَّمَا تُنْذِرُ مَنِ اتَّبَعَ الذِّكْرَ وَ خَشِیَ الرَّحْمٰنَ بِالْغَیْبِۚ فَبَشِّرْهُ بِمَغْفِرَةٍ وَّ اَجْرٍ كَرِیْمٍ(11)</span>
+  <span>اِنَّا نَحْنُ نُحْیِ الْمَوْتٰى وَ نَكْتُبُ مَا قَدَّمُوْا وَ اٰثَارَهُمْۣؕ وَ كُلَّ شَیْءٍ اَحْصَیْنٰهُ فِیْۤ اِمَامٍ مُّبِیْنٍ۠ (12)</span>
+  <span>وَ اضْرِبْ لَهُمْ مَّثَلًا اَصْحٰبَ الْقَرْیَةِۘ اِذْ جَآءَهَا الْمُرْسَلُوْنَۚ (13)</span>
+  <span>اِذْ اَرْسَلْنَاۤ اِلَیْهِمُ اثْنَیْنِ فَكَذَّبُوْهُمَا فَعَزَّزْنَا بِثَالِثٍ فَقَالُوْۤا اِنَّاۤ اِلَیْكُمْ مُّرْسَلُوْنَ(14)</span>
+  <span>قَالُوْا مَاۤ اَنْتُمْ اِلَّا بَشَرٌ مِّثْلُنَاۙ وَ مَاۤ اَنْزَلَ الرَّحْمٰنُ مِنْ شَیْءٍۙ اِنْ اَنْتُمْ اِلَّا تَكْذِبُوْنَ(15)</span>
+  <span>قَالُوْا رَبُّنَا یَعْلَمُ اِنَّاۤ اِلَیْكُمْ لَمُرْسَلُوْنَ(16)</span>
+  <span>وَ مَا عَلَیْنَاۤ اِلَّا الْبَلٰغُ الْمُبِیْنُ(17)</span>
+  <span>قَالُوْۤا اِنَّا تَطَیَّرْنَا بِكُمْۚ لَىٕنْ لَّمْ تَنْتَهُوْا لَنَرْجُمَنَّكُمْ وَ لَیَمَسَّنَّكُمْ مِّنَّا عَذَابٌ اَلِیْمٌ(18)</span>
+  <span>قَالُوْا طَآىٕرُكُمْ مَّعَكُمْؕ اَىٕنْ ذُكِّرْتُمْؕ بَلْ اَنْتُمْ قَوْمٌ مُّسْرِفُوْنَ(19)</span>
+  <span>وَ جَآءَ مِنْ اَقْصَا الْمَدِیْنَةِ رَجُلٌ یَّسْعٰى قَالَ یٰقَوْمِ اتَّبِعُوا الْمُرْسَلِیْنَۙ (20)</span>
+  <span>اتَّبِعُوْا مَنْ لَّا یَسْــٴَـلُكُمْ اَجْرًا وَّ هُمْ مُّهْتَدُوْنَ(21)</span>
+  <span>وَ مَا لِیَ لَاۤ اَعْبُدُ الَّذِیْ فَطَرَنِیْ وَ اِلَیْهِ تُرْجَعُوْنَ(22)</span>
+  <span>ءَاَتَّخِذُ مِنْ دُوْنِهٖۤ اٰلِهَةً اِنْ یُّرِدْنِ الرَّحْمٰنُ بِضُرٍّ لَّا تُغْنِ عَنِّیْ شَفَاعَتُهُمْ شَیْــٴًـا وَّ لَا یُنْقِذُوْنِۚ (23)</span>
+  <span>اِنِّیْۤ اِذًا لَّفِیْ ضَلٰلٍ مُّبِیْنٍ(24)</span>
+  <span>اِنِّیْۤ اٰمَنْتُ بِرَبِّكُمْ فَاسْمَعُوْنِﭤ(25)</span>
+  <span>قِیْلَ ادْخُلِ الْجَنَّةَؕ قَالَ یٰلَیْتَ قَوْمِیْ یَعْلَمُوْنَۙ (26)</span>
+  <span>بِمَا غَفَرَ لِیْ رَبِّیْ وَ جَعَلَنِیْ مِنَ الْمُكْرَمِیْنَ(27)</span>
+  <span>وَ مَاۤ اَنْزَلْنَا عَلٰى قَوْمِهٖ مِنْۢ بَعْدِهٖ مِنْ جُنْدٍ مِّنَ السَّمَآءِ وَ مَا كُنَّا مُنْزِلِیْنَ(28)</span>
+  <span>اِنْ كَانَتْ اِلَّا صَیْحَةً وَّاحِدَةً فَاِذَا هُمْ خٰمِدُوْنَ(29)</span>
+  <span>یٰحَسْرَةً عَلَى الْعِبَادِۣۚ مَا یَاْتِیْهِمْ مِّنْ رَّسُوْلٍ اِلَّا كَانُوْا بِهٖ یَسْتَهْزِءُوْنَ(30)</span>
+  <span>اَلَمْ یَرَوْا كَمْ اَهْلَكْنَا قَبْلَهُمْ مِّنَ الْقُرُوْنِ اَنَّهُمْ اِلَیْهِمْ لَا یَرْجِعُوْنَﭤ(31)</span>
+  <span>وَ اِنْ كُلٌّ لَّمَّا جَمِیْعٌ لَّدَیْنَا مُحْضَرُوْنَ۠ (32)</span>
+  <span>وَ اٰیَةٌ لَّهُمُ الْاَرْضُ الْمَیْتَةُ ۚ اَحْیَیْنٰهَا وَ اَخْرَجْنَا مِنْهَا حَبًّا فَمِنْهُ یَاْكُلُوْنَ(33)</span>
+  <span>وَ جَعَلْنَا فِیْهَا جَنّٰتٍ مِّنْ نَّخِیْلٍ وَّ اَعْنَابٍ وَّ فَجَّرْنَا فِیْهَا مِنَ الْعُیُوْنِۙ (34)</span>
+  <span>لِیَاْكُلُوْا مِنْ ثَمَرِهٖۙ وَ مَا عَمِلَتْهُ اَیْدِیْهِمْؕ اَفَلَا یَشْكُرُوْنَ(35)</span>
+  <span>سُبْحٰنَ الَّذِیْ خَلَقَ الْاَزْوَاجَ كُلَّهَا مِمَّا تُنْۢبِتُ الْاَرْضُ وَ مِنْ اَنْفُسِهِمْ وَ مِمَّا لَا یَعْلَمُوْنَ(36)</span>
+  <span>وَ اٰیَةٌ لَّهُمُ الَّیْلُ ۚ نَسْلَخُ مِنْهُ النَّهَارَ فَاِذَا هُمْ مُّظْلِمُوْنَۙ (37)</span>
+  <span>وَ الشَّمْسُ تَجْرِیْ لِمُسْتَقَرٍّ لَّهَاؕ ذٰلِكَ تَقْدِیْرُ الْعَزِیْزِ الْعَلِیْمِﭤ(38)</span>
+  <span>وَ الْقَمَرَ قَدَّرْنٰهُ مَنَازِلَ حَتّٰى عَادَ كَالْعُرْجُوْنِ الْقَدِیْمِ(39)</span>
+  <span>لَا الشَّمْسُ یَنْۢبَغِیْ لَهَاۤ اَنْ تُدْرِكَ الْقَمَرَ وَ لَا الَّیْلُ سَابِقُ النَّهَارِؕ وَ كُلٌّ فِیْ فَلَكٍ یَّسْبَحُوْنَ(40)</span>
+  <span>وَ اٰیَةٌ لَّهُمْ اَنَّا حَمَلْنَا ذُرِّیَّتَهُمْ فِی الْفُلْكِ الْمَشْحُوْنِۙ (41)</span>
+  <span>وَ خَلَقْنَا لَهُمْ مِّنْ مِّثْلِهٖ مَا یَرْكَبُوْنَ(42)</span>
+  <span>وَ اِنْ نَّشَاْ نُغْرِقْهُمْ فَلَا صَرِیْخَ لَهُمْ وَ لَا هُمْ یُنْقَذُوْنَۙ (43)</span>
+  <span>اِلَّا رَحْمَةً مِّنَّا وَ مَتَاعًا اِلٰى حِیْنٍ(44)</span>
+  <span>وَ اِذَا قِیْلَ لَهُمُ اتَّقُوْا مَا بَیْنَ اَیْدِیْكُمْ وَ مَا خَلْفَكُمْ لَعَلَّكُمْ تُرْحَمُوْنَ(45)</span>
+  <span>وَ مَا تَاْتِیْهِمْ مِّنْ اٰیَةٍ مِّنْ اٰیٰتِ رَبِّهِمْ اِلَّا كَانُوْا عَنْهَا مُعْرِضِیْنَ(46)</span>
+  <span>وَ اِذَا قِیْلَ لَهُمْ اَنْفِقُوْا مِمَّا رَزَقَكُمُ اللّٰهُۙ قَالَ الَّذِیْنَ كَفَرُوْا لِلَّذِیْنَ اٰمَنُوْۤا اَنُطْعِمُ مَنْ لَّوْ یَشَآءُ اللّٰهُ اَطْعَمَهٗۤ ﳓ اِنْ اَنْتُمْ اِلَّا فِیْ ضَلٰلٍ مُّبِیْنٍ(47)</span>
+  <span>وَ یَقُوْلُوْنَ مَتٰى هٰذَا الْوَعْدُ اِنْ كُنْتُمْ صٰدِقِیْنَ(48)</span>
+  <span>مَا یَنْظُرُوْنَ اِلَّا صَیْحَةً وَّاحِدَةً تَاْخُذُهُمْ وَ هُمْ یَخِصِّمُوْنَ(49)</span>
+  <span>فَلَا یَسْتَطِیْعُوْنَ تَوْصِیَةً وَّ لَاۤ اِلٰۤى اَهْلِهِمْ یَرْجِعُوْنَ۠ (50)</span>
+  <span>وَ نُفِخَ فِی الصُّوْرِ فَاِذَا هُمْ مِّنَ الْاَجْدَاثِ اِلٰى رَبِّهِمْ یَنْسِلُوْنَ(51)</span>
+
+  <span>قَالُوْا یٰوَیْلَنَا مَنْۢ بَعَثَنَا مِنْ مَّرْقَدِنَاﱃ هٰذَا مَا وَعَدَ الرَّحْمٰنُ وَ صَدَقَ الْمُرْسَلُوْنَ(52)</span>
+
+  <span>اِنْ كَانَتْ اِلَّا صَیْحَةً وَّاحِدَةً فَاِذَا هُمْ جَمِیْعٌ لَّدَیْنَا مُحْضَرُوْنَ(53)</span>
+
+  <span>فَالْیَوْمَ لَا تُظْلَمُ نَفْسٌ شَیْــٴًـا وَّ لَا تُجْزَوْنَ اِلَّا مَا كُنْتُمْ تَعْمَلُوْنَ(54)</span>
+
+  <span>اِنَّ اَصْحٰبَ الْجَنَّةِ الْیَوْمَ فِیْ شُغُلٍ فٰكِهُوْنَۚ (55)</span>
+
+  <span>هُمْ وَ اَزْوَاجُهُمْ فِیْ ظِلٰلٍ عَلَى الْاَرَآىٕكِ مُتَّكِــٴُـوْنَ (56)</span>
+
+  <span>لَهُمْ فِیْهَا فَاكِهَةٌ وَّ لَهُمْ مَّا یَدَّعُوْنَﭕ(57)</span>
+
+  <span>سَلٰمٌ- قَوْلًا مِّنْ رَّبٍّ رَّحِیْمٍ(58)</span>
+
+  <span>وَ امْتَازُوا الْیَوْمَ اَیُّهَا الْمُجْرِمُوْنَ(59)</span>
+
+  <span>اَلَمْ اَعْهَدْ اِلَیْكُمْ یٰبَنِیْۤ اٰدَمَ اَنْ لَّا تَعْبُدُوا الشَّیْطٰنَۚ اِنَّهٗ لَكُمْ عَدُوٌّ مُّبِیْنٌۙ (60)</span>
+
+  <span>وَّ اَنِ اعْبُدُوْنِیْﳳ هٰذَا صِرَاطٌ مُّسْتَقِیْمٌ(61)</span>
+
+  <span>وَ لَقَدْ اَضَلَّ مِنْكُمْ جِبِلًّا كَثِیْرًاؕ اَفَلَمْ تَكُوْنُوْا تَعْقِلُوْنَ(62)</span>
+
+  <span>هٰذِهٖ جَهَنَّمُ الَّتِیْ كُنْتُمْ تُوْعَدُوْنَ(63)</span>
+
+  <span>اِصْلَوْهَا الْیَوْمَ بِمَا كُنْتُمْ تَكْفُرُوْنَ(64)</span>
+
+  <span>اَلْیَوْمَ نَخْتِمُ عَلٰۤى اَفْوَاهِهِمْ وَ تُكَلِّمُنَاۤ اَیْدِیْهِمْ وَ تَشْهَدُ اَرْجُلُهُمْ بِمَا كَانُوْا یَكْسِبُوْنَ(65)</span>
+
+  <span>وَ لَوْ نَشَآءُ لَطَمَسْنَا عَلٰۤى اَعْیُنِهِمْ فَاسْتَبَقُوا الصِّرَاطَ فَاَنّٰى یُبْصِرُوْنَ(66)</span>
+
+  <span>وَ لَوْ نَشَآءُ لَمَسَخْنٰهُمْ عَلٰى مَكَانَتِهِمْ فَمَا اسْتَطَاعُوْا مُضِیًّا وَّ لَا یَرْجِعُوْنَ۠ (67)</span>
+
+  <span>وَ مَنْ نُّعَمِّرْهُ نُنَكِّسْهُ فِی الْخَلْقِؕ اَفَلَا یَعْقِلُوْنَ(68)</span>
+
+  <span>وَ مَا عَلَّمْنٰهُ الشِّعْرَ وَ مَا یَنْۢبَغِیْ لَهٗؕ اِنْ هُوَ اِلَّا ذِكْرٌ وَّ قُرْاٰنٌ مُّبِیْنٌۙ (69)</span>
+
+  <span>لِّیُنْذِرَ مَنْ كَانَ حَیًّا وَّ یَحِقَّ الْقَوْلُ عَلَى الْكٰفِرِیْنَ(70)</span>
+
+  <span>اَوَ لَمْ یَرَوْا اَنَّا خَلَقْنَا لَهُمْ مِّمَّا عَمِلَتْ اَیْدِیْنَاۤ اَنْعَامًا فَهُمْ لَهَا مٰلِكُوْنَ(71)</span>
+
+  <span>وَ ذَلَّلْنٰهَا لَهُمْ فَمِنْهَا رَكُوْبُهُمْ وَ مِنْهَا یَاْكُلُوْنَ(72)</span>
+
+  <span>وَ لَهُمْ فِیْهَا مَنَافِعُ وَ مَشَارِبُؕ اَفَلَا یَشْكُرُوْنَ(73)</span>
+
+  <span>وَ اتَّخَذُوْا مِنْ دُوْنِ اللّٰهِ اٰلِهَةً لَّعَلَّهُمْ یُنْصَرُوْنَﭤ(74)</span>
+
+  <span>لَا یَسْتَطِیْعُوْنَ نَصْرَهُمْۙ وَ هُمْ لَهُمْ جُنْدٌ مُّحْضَرُوْنَ(75)</span>
+
+  <span>فَلَا یَحْزُنْكَ قَوْلُهُمْۘ اِنَّا نَعْلَمُ مَا یُسِرُّوْنَ وَ مَا یُعْلِنُوْنَ(76)</span>
+
+  <span>اَوَ لَمْ یَرَ الْاِنْسَانُ اَنَّا خَلَقْنٰهُ مِنْ نُّطْفَةٍ فَاِذَا هُوَ خَصِیْمٌ مُّبِیْنٌ(77)</span>
+
+  <span>وَ ضَرَبَ لَنَا مَثَلًا وَّ نَسِیَ خَلْقَهٗؕ قَالَ مَنْ یُّحْیِ الْعِظَامَ وَ هِیَ رَمِیْمٌ(78)</span>
+
+  <span>قُلْ یُحْیِیْهَا الَّذِیْۤ اَنْشَاَهَاۤ اَوَّلَ مَرَّةٍؕ وَ هُوَ بِكُلِّ خَلْقٍ عَلِیْمُﰳۙ (79)</span>
+
+  <span>الَّذِیْ جَعَلَ لَكُمْ مِّنَ الشَّجَرِ الْاَخْضَرِ نَارًا فَاِذَاۤ اَنْتُمْ مِّنْهُ تُوْقِدُوْنَ(80)</span>
+
+  <span>اَوَ لَیْسَ الَّذِیْ خَلَقَ السَّمٰوٰتِ وَ الْاَرْضَ بِقٰدِرٍ عَلٰۤى اَنْ یَّخْلُقَ مِثْلَهُمْﳳ بَلٰىۗ وَ هُوَ الْخَلّٰقُ الْعَلِیْمُ(81)</span>
+
+  <span>اِنَّمَاۤ اَمْرُهٗۤ اِذَاۤ اَرَادَ شَیْــٴًـا اَنْ یَّقُوْلَ لَهٗ كُنْ فَیَكُوْنُ(82)</span>
+
+  <span>فَسُبْحٰنَ الَّذِیْ بِیَدِهٖ مَلَكُوْتُ كُلِّ شَیْءٍ وَّ اِلَیْهِ تُرْجَعُوْنَ۠ (83)</span>
+</div>
+
+<!--English Translation-->
+
+<div class="english">
+
+  <span>1.Yâ-Sĩn.</span>
+
+  <span>2.By the Quran, rich in wisdom!</span>
+
+  <span>3.You ˹O Prophet˺ are truly one of the messengers</span>
+
+  <span>4.upon the Straight Path.</span>
+
+  <span>5.˹This is˺ a revelation from the Almighty, Most Merciful,</span>
+
+  <span>6.so that you may warn a people whose forefathers were not warned, and so are heedless.</span>
+
+  <span>7.The decree ˹of torment˺ has already been justified against most of them, for they will never believe.</span>
+
+  <span>8.˹It is as if˺ We have put shackles around their necks up to their chins, so their heads are forced up,</span>
+
+  <span>9.and have placed a barrier before them and a barrier behind them and covered them ˹all˺ up, so they fail to see ˹the truth˺.</span>
+
+  <span>10.It is the same whether you warn them or not—they will never believe.</span>
+
+  <span>11.You can only warn those who follow the Reminder and are in awe of the Most Compassionate without seeing Him. So give them good news of forgiveness and an honourable reward.</span>
+
+  <span>12.It is certainly We Who resurrect the dead, and write what they send forth and what they leave behind. Everything is listed by Us in a perfect Record.</span>
+
+  <span>13.Give them an example ˹O Prophet˺ of the residents of a town, when the messengers came to them.</span>
+
+  <span>14.We sent them two messengers, but they rejected both. So We reinforced ˹the two˺ with a third, and they declared, “We have indeed been sent to you ˹as messengers˺.”</span>
+
+  <span>15.The people replied, “You are only humans like us, and the Most Compassionate has not revealed anything. You are simply lying!”</span>
+
+  <span>16.The messengers responded, “Our Lord knows that we have truly been sent to you.</span>
+
+  <span>17.And our duty is only to deliver ˹the message˺ clearly.”</span>
+
+  <span>18.The people replied, “We definitely see you as a bad omen for us. If you do not desist, we will certainly stone you ˹to death˺ and you will be touched with a painful punishment from us.”</span>
+
+  <span>19.The messengers said, “Your bad omen lies within yourselves. Are you saying this because you are reminded ˹of the truth˺? In fact, you are a transgressing people.”</span>
+
+  <span>20.Then from the farthest end of the city a man came, rushing. He advised, “O my people! Follow the messengers.</span>
+
+  <span>21.Follow those who ask no reward of you, and are ˹rightly˺ guided.</span>
+
+  <span>22.And why should I not worship the One Who has originated me, and to Whom you will be returned.</span>
+
+  <span>23.How could I take besides Him other gods whose intercession would not be of any benefit to me, nor could they save me if the Most Compassionate intended to harm me?</span>
+
+  <span>24.Indeed, I would then be clearly astray.</span>
+
+  <span>25.I do believe in your Lord, so listen to me.”</span>
+
+  <span>26.˹But they killed him, then˺ he was told ˹by the angels˺, “Enter Paradise!” He said, “If only my people knew</span>
+
+  <span>27.of how my Lord has forgiven me, and made me one of the honourable.”</span>
+
+  <span>55.Indeed, on that Day the residents of Paradise will be busy enjoying themselves.</span>
+
+  <span>56.They and their spouses will be in ˹cool˺ shade, reclining on ˹canopied˺ couches.</span>
+
+  <span>57.There they will have fruits and whatever they desire.</span>
+
+  <span>58.And “Peace!” will be ˹their˺ greeting from the Merciful Lord.</span>
+
+  <span>59.˹Then the disbelievers will be told,˺ “Step away ˹from the believers˺ this Day, O wicked ones!</span>
+
+  <span>60.Did I not command you, O Children of Adam, not to follow Satan, for he is truly your sworn enemy,</span>
+
+  <span>61.but to worship Me ˹alone˺? This is the Straight Path.</span>
+
+  <span>62.Yet he already misled great multitudes of you. Did you not have any sense?</span>
+
+  <span>63.This is the Hell you were warned of.</span>
+
+  <span>64.Burn in it Today for your disbelief.”</span>
+
+  <span>65.On this Day We will seal their mouths, their hands will speak to Us, and their feet will testify to what they used to commit.</span>
+
+  <span>66.Had We willed, We could have easily blinded their eyes, so they would struggle to find their way. How then could they see?</span>
+
+  <span>67.And had We willed, We could have transfigured them on the spot, so they could neither progress forward nor turn back.</span>
+
+  <span>68.And whoever We grant a long life, We reverse them in development. Will they not then understand?</span>
+
+  <span>69.We have not taught him poetry, nor is it fitting for him. This ˹Book˺ is only a Reminder and a clear Quran</span>
+
+  <span>70.to warn whoever is ˹truly˺ alive and fulfil the decree ˹of torment˺ against the disbelievers.</span>
+
+  <span>71.Do they not see that We singlehandedly created for them, among other things, cattle which are under their control?</span>
+
+  <span>72.And We have subjected these ˹animals˺ to them, so they may ride some and eat others.</span>
+
+  <span>73.And they derive from them other benefits and drinks. Will they not then give thanks?</span>
+
+  <span>74.Still they have taken other gods besides Allah, hoping to be helped ˹by them˺.</span>
+
+  <span>75.They cannot help the pagans, even though they serve the idols as dedicated guards.</span>
+
+  <span>76.So do not let their words grieve you ˹O Prophet˺. Indeed, We ˹fully˺ know what they conceal and what they reveal.</span>
+
+  <span>77.Do people not see that We have created them from a sperm-drop, then—behold!—they openly challenge ˹Us˺?</span>
+
+  <span>78.And they argue with Us—forgetting they were created—saying, “Who will give life to decayed bones?”</span>
+
+  <span>79.Say, ˹O Prophet,˺ “They will be revived by the One Who produced them the first time, for He has ˹perfect˺ knowledge of every created being.</span>
+
+  <span>80.˹He is the One˺ Who gives you fire from green trees, and—behold!—you kindle ˹fire˺ from them.</span>
+
+  <span>81.Can the One Who created the heavens and the earth not ˹easily˺ resurrect these ˹deniers˺?” Yes ˹He can˺! For He is the Master Creator, All-Knowing.</span>
+
+  <span>82.All it takes, when He wills something ˹to be˺, is simply to say to it: “Be!” And it is!</span>
+
+  <span>83.So glory be to the One in Whose Hands is the authority over all things, and to Whom ˹alone˺ you will ˹all˺ be returned.</span>
+
+</div>
+  <button class="back-btn" onclick="goBack()">← Back Home</button>
+
+</section>
+
+<!-- SURAH WAQIAH -->
+<section class="surah-section" id="waqiah">
+
+  <div class="top-bar">
+    <h2>Surah Al-Waqi'ah</h2>
+    <button onclick="toggleLanguage('waqiah')">English Translation</button>
+  </div>
+
+  <!-- SURAH AL-WAQI'AH -->
+
+<div class="bismillah">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِیْمِ</div>
+
+<div class="arabic">
+  <span>اِذَا وَقَعَتِ الْوَاقِعَةُۙ (1)</span>
+  <span>لَیْسَ لِوَقْعَتِهَا كَاذِبَةٌﭥ(2)</span>
+  <span>خَافِضَةٌ رَّافِعَةٌۙ (3)</span>
+  <span>اِذَا رُجَّتِ الْاَرْضُ رَجًّاۙ (4)</span>
+  <span>وَّ بُسَّتِ الْجِبَالُ بَسًّاۙ (5)</span>
+  <span>فَكَانَتْ هَبَآءً مُّنْۢبَثًّاۙ (6)</span>
+  <span>وَّ كُنْتُمْ اَزْوَاجًا ثَلٰثَةًﭤ(7)</span>
+  <span>فَاَصْحٰبُ الْمَیْمَنَةِ ﳔ مَاۤ اَصْحٰبُ الْمَیْمَنَةِﭤ(8)</span>
+  <span>وَ اَصْحٰبُ الْمَشْــٴَـمَةِ ﳔ مَاۤ اَصْحٰبُ الْمَشْــٴَـمَةِﭤ(9)</span>
+  <span>وَ السّٰبِقُوْنَ السّٰبِقُوْنَﳐ(10)</span>
+  <span>اُولٰٓىٕكَ الْمُقَرَّبُوْنَۚ (11)</span>
+  <span>فِیْ جَنّٰتِ النَّعِیْمِ(12)</span>
+  <span>ثُلَّةٌ مِّنَ الْاَوَّلِیْنَۙ (13)</span>
+  <span>وَ قَلِیْلٌ مِّنَ الْاٰخِرِیْنَﭤ(14)</span>
+  <span>عَلٰى سُرُرٍ مَّوْضُوْنَةٍۙ (15)</span>
+  <span>مُّتَّكِـٕیْنَ عَلَیْهَا مُتَقٰبِلِیْنَ(16)</span>
+  <span>یَطُوْفُ عَلَیْهِمْ وِلْدَانٌ مُّخَلَّدُوْنَۙ (17)</span>
+  <span>بِاَكْوَابٍ وَّ اَبَارِیْقَ ﳔ وَ كَاْسٍ مِّنْ مَّعِیْنٍۙ (18)</span>
+  <span>لَّا یُصَدَّعُوْنَ عَنْهَا وَ لَا یُنْزِفُوْنَۙ (19)</span>
+  <span>وَ فَاكِهَةٍ مِّمَّا یَتَخَیَّرُوْنَۙ (20)</span>
+  <span>وَ لَحْمِ طَیْرٍ مِّمَّا یَشْتَهُوْنَﭤ(21)</span>
+  <span>وَ حُوْرٌ عِیْنٌۙ (22)</span>
+  <span>كَاَمْثَالِ اللُّؤْلُوَٴ الْمَكْنُوْنِۚ (23)</span>
+  <span>جَزَآءًۢ بِمَا كَانُوْا یَعْمَلُوْنَ(24)</span>
+  <span>لَا یَسْمَعُوْنَ فِیْهَا لَغْوًا وَّ لَا تَاْثِیْمًاۙ (25)</span>
+  <span>اِلَّا قِیْلًا سَلٰمًا سَلٰمًا(26)</span>
+  <span>وَ اَصْحٰبُ الْیَمِیْنِ ﳔ مَاۤ اَصْحٰبُ الْیَمِیْنِﭤ(27)</span>
+  <span>فِیْ سِدْرٍ مَّخْضُوْدٍۙ (28)</span>
+  <span>وَّ طَلْحٍ مَّنْضُوْدٍۙ (29)</span>
+  <span>وَّ ظِلٍّ مَّمْدُوْدٍۙ (30)</span>
+  <span>وَّ مَآءٍ مَّسْكُوْبٍۙ (31)</span>
+  <span>وَّ فَاكِهَةٍ كَثِیْرَةٍۙ (32)</span>
+  <span>لَّا مَقْطُوْعَةٍ وَّ لَا مَمْنُوْعَةٍۙ (33)</span>
+  <span>وَّ فُرُشٍ مَّرْفُوْعَةٍﭤ(34)</span>
+  <span>اِنَّاۤ اَنْشَاْنٰهُنَّ اِنْشَآءًۙ (35)</span>
+  <span>فَجَعَلْنٰهُنَّ اَبْكَارًاۙ (36)</span>
+  <span>عُرُبًا اَتْرَابًاۙ (37)</span>
+  <span>لِّاَصْحٰبِ الْیَمِیْنِؕ۠ (38)</span>
+
+  <span>ثُلَّةٌ مِّنَ الْاَوَّلِیْنَۙ (39)</span>
+  <span>وَ ثُلَّةٌ مِّنَ الْاٰخِرِیْنَﭤ(40)</span>
+  <span>وَ اَصْحٰبُ الشِّمَالِ ﳔ مَاۤ اَصْحٰبُ الشِّمَالِﭤ(41)</span>
+  <span>فِیْ سَمُوْمٍ وَّ حَمِیْمٍۙ (42)</span>
+  <span>وَّ ظِلٍّ مِّنْ یَّحْمُوْمٍۙ (43)</span>
+  <span>لَّا بَارِدٍ وَّ لَا كَرِیْمٍ(44)</span>
+  <span>اِنَّهُمْ كَانُوْا قَبْلَ ذٰلِكَ مُتْرَفِیْنَﭕ(45)</span>
+  <span>وَ كَانُوْا یُصِرُّوْنَ عَلَى الْحِنْثِ الْعَظِیْمِۚ (46)</span>
+  <span>وَ كَانُوْا یَقُوْلُوْنَ ﳔ اَىٕذَا مِتْنَا وَ كُنَّا تُرَابًا وَّ عِظَامًا ءَاِنَّا لَمَبْعُوْثُوْنَۙ (47)</span>
+  <span>اَوَ اٰبَآؤُنَا الْاَوَّلُوْنَ(48)</span>
+  <span>قُلْ اِنَّ الْاَوَّلِیْنَ وَ الْاٰخِرِیْنَۙ (49)</span>
+  <span>لَمَجْمُوْعُوْنَ ﳔ اِلٰى مِیْقَاتِ یَوْمٍ مَّعْلُوْمٍ(50)</span>
+  <span>ثُمَّ اِنَّكُمْ اَیُّهَا الضَّآلُّوْنَ الْمُكَذِّبُوْنَۙ (51)</span>
+  <span>لَاٰكِلُوْنَ مِنْ شَجَرٍ مِّنْ زَقُّوْمٍۙ (52)</span>
+  <span>فَمَالِــٴُـوْنَ مِنْهَا الْبُطُوْنَۚ (53)</span>
+  <span>فَشٰرِبُوْنَ عَلَیْهِ مِنَ الْحَمِیْمِۚ (54)</span>
+  <span>فَشٰرِبُوْنَ شُرْبَ الْهِیْمِﭤ(55)</span>
+  <span>هٰذَا نُزُلُهُمْ یَوْمَ الدِّیْنِﭤ(56)</span>
+  <span>نَحْنُ خَلَقْنٰكُمْ فَلَوْ لَا تُصَدِّقُوْنَ(57)</span>
+  <span>اَفَرَءَیْتُمْ مَّا تُمْنُوْنَﭤ(58)</span>
+  <span>ءَاَنْتُمْ تَخْلُقُوْنَهٗۤ اَمْ نَحْنُ الْخٰلِقُوْنَ(59)</span>
+  <span>نَحْنُ قَدَّرْنَا بَیْنَكُمُ الْمَوْتَ وَ مَا نَحْنُ بِمَسْبُوْقِیْنَۙ (60)</span>
+  <span>عَلٰۤى اَنْ نُّبَدِّلَ اَمْثَالَكُمْ وَ نُنْشِئَكُمْ فِیْ مَا لَا تَعْلَمُوْنَ(61)</span>
+  <span>وَ لَقَدْ عَلِمْتُمُ النَّشْاَةَ الْاُوْلٰى فَلَوْ لَا تَذَكَّرُوْنَ(62)</span>
+  <span>اَفَرَءَیْتُمْ مَّا تَحْرُثُوْنَﭤ(63)</span>
+  <span>ءَاَنْتُمْ تَزْرَعُوْنَهٗۤ اَمْ نَحْنُ الزّٰرِعُوْنَ(64)</span>
+  <span>لَوْ نَشَآءُ لَجَعَلْنٰهُ حُطَامًا فَظَلْتُمْ تَفَكَّهُوْنَ(65)</span>
+  <span>اِنَّا لَمُغْرَمُوْنَۙ (66)</span>
+  <span>بَلْ نَحْنُ مَحْرُوْمُوْنَ(67)</span>
+  <span>اَفَرَءَیْتُمُ الْمَآءَ الَّذِیْ تَشْرَبُوْنَﭤ(68)</span>
+  <span>ءَاَنْتُمْ اَنْزَلْتُمُوْهُ مِنَ الْمُزْنِ اَمْ نَحْنُ الْمُنْزِلُوْنَ(69)</span>
+  <span>لَوْ نَشَآءُ جَعَلْنٰهُ اُجَاجًا فَلَوْ لَا تَشْكُرُوْنَ(70)</span>
+  <span>اَفَرَءَیْتُمُ النَّارَ الَّتِیْ تُوْرُوْنَﭤ(71)</span>
+  <span>ءَاَنْتُمْ اَنْشَاْتُمْ شَجَرَتَهَاۤ اَمْ نَحْنُ الْمُنْشِــٴُـوْنَ(72)</span>
+  <span>نَحْنُ جَعَلْنٰهَا تَذْكِرَةً وَّ مَتَاعًا لِّلْمُقْوِیْنَۚ (73)</span>
+  <span>فَسَبِّحْ بِاسْمِ رَبِّكَ الْعَظِیْمِ۠ ٝ (74)</span>
+
+  <span>فَلَاۤ اُقْسِمُ بِمَوٰقِعِ النُّجُوْمِۙ (75)</span>
+  <span>وَ اِنَّهٗ لَقَسَمٌ لَّوْ تَعْلَمُوْنَ عَظِیْمٌۙ (76)</span>
+  <span>اِنَّهٗ لَقُرْاٰنٌ كَرِیْمٌۙ (77)</span>
+  <span>فِیْ كِتٰبٍ مَّكْنُوْنٍۙ (78)</span>
+  <span>لَّا یَمَسُّهٗۤ اِلَّا الْمُطَهَّرُوْنَﭤ(79)</span>
+  <span>تَنْزِیْلٌ مِّنْ رَّبِّ الْعٰلَمِیْنَ(80)</span>
+  <span>اَفَبِهٰذَا الْحَدِیْثِ اَنْتُمْ مُّدْهِنُوْنَۙ (81)</span>
+  <span>وَ تَجْعَلُوْنَ رِزْقَكُمْ اَنَّكُمْ تُكَذِّبُوْنَ(82)</span>
+  <span>فَلَوْ لَاۤ اِذَا بَلَغَتِ الْحُلْقُوْمَۙ (83)</span>
+  <span>وَ اَنْتُمْ حِیْنَىٕذٍ تَنْظُرُوْنَۙ (84)</span>
+  <span>وَ نَحْنُ اَقْرَبُ اِلَیْهِ مِنْكُمْ وَ لٰـكِنْ لَّا تُبْصِرُوْنَ(85)</span>
+  <span>فَلَوْ لَاۤ اِنْ كُنْتُمْ غَیْرَ مَدِیْنِیْنَۙ (86)</span>
+  <span>تَرْجِعُوْنَهَاۤ اِنْ كُنْتُمْ صٰدِقِیْنَ(87)</span>
+  <span>فَاَمَّاۤ اِنْ كَانَ مِنَ الْمُقَرَّبِیْنَۙ (88)</span>
+  <span>فَرَوْحٌ وَّ رَیْحَانٌ ﳔ وَّ جَنَّتُ نَعِیْمٍ(89)</span>
+  <span>وَ اَمَّاۤ اِنْ كَانَ مِنْ اَصْحٰبِ الْیَمِیْنِۙ (90)</span>
+  <span>فَسَلٰمٌ لَّكَ مِنْ اَصْحٰبِ الْیَمِیْنِﭤ(91)</span>
+  <span>وَ اَمَّاۤ اِنْ كَانَ مِنَ الْمُكَذِّبِیْنَ الضَّآلِّیْنَۙ (92)</span>
+  <span>فَنُزُلٌ مِّنْ حَمِیْمٍۙ (93)</span>
+  <span>وَّ تَصْلِیَةُ جَحِیْمٍ(94)</span>
+  <span>اِنَّ هٰذَا لَهُوَ حَقُّ الْیَقِیْنِۚ (95)</span>
+  <span>فَسَبِّحْ بِاسْمِ رَبِّكَ الْعَظِیْمِ۠ (96)</span>
+</div>
+
+<!--English Translation-->
+<div class="english">
+
+  <span>1.When the Inevitable Event takes place,</span>
+
+  <span>2.then no one can deny it has come.</span>
+
+  <span>3.It will debase ˹some˺ and elevate ˹others˺.</span>
+
+  <span>4.When the earth will be violently shaken,</span>
+
+  <span>5.and the mountains will be crushed to pieces,</span>
+
+  <span>6.becoming scattered ˹particles of˺ dust,</span>
+
+  <span>7.you will ˹all˺ be ˹divided into˺ three groups:</span>
+
+  <span>8.the people of the right, how ˹blessed˺ will they be;</span>
+
+  <span>9.the people of the left, how ˹miserable˺ will they be;</span>
+
+  <span>10.and the foremost ˹in faith˺ will be the foremost ˹in Paradise˺.</span>
+
+  <span>11.They are the ones nearest ˹to Allah˺,</span>
+
+  <span>12.in the Gardens of Bliss.</span>
+
+  <span>13.˹They will be˺ a multitude from earlier generations</span>
+
+  <span>14.and a few from later generations.</span>
+
+  <span>15.˹All will be˺ on jewelled thrones,</span>
+
+  <span>16.reclining face to face.</span>
+
+  <span>17.They will be waited on by eternal youths</span>
+
+  <span>18.with cups, pitchers, and a drink ˹of pure wine˺ from a flowing stream,</span>
+
+  <span>19.that will cause them neither headache nor intoxication.</span>
+
+  <span>20.˹They will also be served˺ any fruit they choose</span>
+
+  <span>21.and meat from any bird they desire.</span>
+
+  <span>22.And ˹they will have˺ maidens with gorgeous eyes,</span>
+
+  <span>23.like pristine pearls,</span>
+
+  <span>24.˹all˺ as a reward for what they used to do.</span>
+
+  <span>25.There they will never hear any idle or sinful talk—</span>
+
+  <span>26.only good and virtuous speech.</span>
+
+  <span>27.And the people of the right—how ˹blessed˺ will they be!</span>
+
+  <span>28.˹They will be˺ amid thornless lote trees,</span>
+
+  <span>29.clusters of bananas,</span>
+
+  <span>30.extended shade,</span>
+
+  <span>31.flowing water,</span>
+
+  <span>32.abundant fruit—</span>
+
+  <span>33.never out of season nor forbidden—</span>
+
+  <span>34.and elevated furnishings.</span>
+
+  <span>35.Indeed, We will have perfectly created their mates,</span>
+
+  <span>36.making them virgins,</span>
+
+  <span>37.loving and of equal age,</span>
+
+  <span>38.for the people of the right,</span>
+
+  <span>39.˹who will be˺ a multitude from earlier generations</span>
+
+  <span>40.and a multitude from later generations.</span>
+
+  <span>41.And the people of the left—how ˹miserable˺ will they be!</span>
+
+  <span>42.˹They will be˺ in scorching heat and boiling water,</span>
+
+  <span>43.in the shade of black smoke,</span>
+
+  <span>44.neither cool nor refreshing.</span>
+
+  <span>45.Indeed, before this ˹torment˺ they were spoiled by luxury,</span>
+
+  <span>46.and persisted in the worst of sin.</span>
+
+  <span>47.They used to ask ˹mockingly˺, “When we are dead and reduced to dust and bones, will we really be resurrected?</span>
+
+  <span>48.And our forefathers as well?”</span>
+
+  <span>49.Say, ˹O Prophet,˺ “Most certainly, earlier and later generations</span>
+
+  <span>50.will surely be gathered ˹together˺ for the appointed Day.</span>
+
+  <span>51.Then you, O misguided deniers,</span>
+
+  <span>52.will certainly eat from ˹the fruit of˺ the trees of Zaqqûm,</span>
+
+  <span>53.filling up ˹your˺ bellies with it.</span>
+
+  <span>54.Then on top of that you will drink boiling water—</span>
+
+  <span>55.and you will drink ˹it˺ like thirsty camels do.”</span>
+
+  <span>56.This will be their accommodation on the Day of Judgment.</span>
+
+  <span>57.It is We Who created you. Will you not then believe ˹in resurrection˺?</span>
+
+  <span>58.Have you considered what you ejaculate?</span>
+
+  <span>59.Is it you who create ˹a child out of˺ it, or is it We Who do so?</span>
+
+  <span>60.We have ordained death for ˹all of˺ you, and We cannot be prevented</span>
+
+  <span>61.from transforming and recreating you in forms unknown to you.</span>
+
+  <span>62.You already know how you were first created. Will you not then be mindful?</span>
+
+  <span>63.Have you considered what you sow?</span>
+
+  <span>64.Is it you who cause it to grow, or is it We Who do so?</span>
+
+  <span>65.If We willed, We could simply reduce this ˹harvest˺ to chaff, leaving you to lament,</span>
+
+  <span>66.“We have truly suffered a ˹great˺ loss.</span>
+
+  <span>67.In fact, we have been deprived ˹of our livelihood˺.”</span>
+
+  <span>68.Have you considered the water you drink?</span>
+
+  <span>69.Is it you who bring it down from the clouds, or is it We Who do so?</span>
+
+  <span>70.If We willed, We could make it salty. Will you not then give thanks?</span>
+
+  <span>71.Have you considered the fire you kindle?</span>
+
+  <span>72.Is it you who produce its trees, or is it We Who do so?</span>
+
+  <span>73.We have made it ˹as˺ a reminder ˹of the Hellfire˺ and a provision for the travellers.</span>
+
+  <span>74.So glorify the Name of your Lord, the Greatest.</span>
+
+  <span>75.So I do swear by the positions of the stars—</span>
+
+  <span>76.and this, if only you knew, is indeed a great oath—</span>
+
+  <span>77.that this is truly a noble Quran,</span>
+
+  <span>78.in a well-preserved Record,</span>
+
+  <span>79.touched by none except the purified ˹angels˺.</span>
+
+  <span>80.˹It is˺ a revelation from the Lord of all worlds.</span>
+
+  <span>81.How can you then take this message lightly,</span>
+
+  <span>82.and repay ˹Allah for˺ your provisions with denial?</span>
+
+  <span>83.Why then ˹are you helpless˺ when the soul ˹of a dying person˺ reaches ˹their˺ throat,</span>
+
+  <span>84.while you are looking on?</span>
+
+  <span>85.And We are nearer to such a person than you, but you cannot see.</span>
+
+  <span>86.Now, if you are not subject to Our Will ˹as you claim˺,</span>
+
+  <span>87.bring that soul back, if what you say is true.</span>
+
+  <span>88.So, if the deceased is one of those brought near ˹to Us˺,</span>
+
+  <span>89.then ˹such a person will have˺ serenity, fragrance, and a Garden of Bliss.</span>
+
+  <span>90.And if the deceased is one of the people of the right,</span>
+
+  <span>91.then ˹they will be told,˺ “Greetings to you from the people of the right.”</span>
+
+  <span>92.But if such person is one of the misguided deniers,</span>
+
+  <span>93.then their accommodation will be boiling water ˹to drink˺</span>
+
+  <span>94.and burning in Hellfire.</span>
+
+  <span>95.Indeed, this is the absolute truth.</span>
+
+  <span>96.So glorify the Name of your Lord, the Greatest.</span>
+</div>
+
+  <button class="back-btn" onclick="goBack()">← Back Home</button>
+
+</section>
+
+<!-- SURAH MULK -->
+<section class="surah-section" id="mulk">
+
+  <div class="top-bar">
+    <h2>Surah Al-Mulk</h2>
+    <button onclick="toggleLanguage('mulk')">English Translation</button>
+  </div>
+
+  <div class="bismillah">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِیْمِ</div>
+
+<div class="arabic">
+  <span>تَبٰرَكَ الَّذِیْ بِیَدِهِ الْمُلْكُ٘- وَ هُوَ عَلٰى كُلِّ شَیْءٍ قَدِیْرُﰳۙ (1)</span>
+
+  <span>الَّذِیْ خَلَقَ الْمَوْتَ وَ الْحَیٰوةَ لِیَبْلُوَكُمْ اَیُّكُمْ اَحْسَنُ عَمَلًاؕ-وَ هُوَ الْعَزِیْزُ الْغَفُوْرُۙ (2)</span>
+
+  <span>الَّذِیْ خَلَقَ سَبْعَ سَمٰوٰتٍ طِبَاقًاؕ-مَا تَرٰى فِیْ خَلْقِ الرَّحْمٰنِ مِنْ تَفٰوُتٍؕ-فَارْجِـعِ الْبَصَرَۙ-هَلْ تَرٰى مِنْ فُطُوْرٍ (3)</span>
+
+  <span>ثُمَّ ارْجِـعِ الْبَصَرَ كَرَّتَیْنِ یَنْقَلِبْ اِلَیْكَ الْبَصَرُ خَاسِئًا وَّ هُوَ حَسِیْرٌ (4)</span>
+
+  <span>وَ لَقَدْ زَیَّنَّا السَّمَآءَ الدُّنْیَا بِمَصَابِیْحَ وَ جَعَلْنٰهَا رُجُوْمًا لِّلشَّیٰطِیْنِ وَ اَعْتَدْنَا لَهُمْ عَذَابَ السَّعِیْرِ (5)</span>
+
+  <span>وَ لِلَّذِیْنَ كَفَرُوْا بِرَبِّهِمْ عَذَابُ جَهَنَّمَؕ-وَ بِئْسَ الْمَصِیْرُ (6)</span>
+
+  <span>اِذَاۤ اُلْقُوْا فِیْهَا سَمِعُوْا لَهَا شَهِیْقًا وَّ هِیَ تَفُوْرُۙ (7)</span>
+
+  <span>تَكَادُ تَمَیَّزُ مِنَ الْغَیْظِؕ-كُلَّمَاۤ اُلْقِیَ فِیْهَا فَوْجٌ سَاَلَهُمْ خَزَنَتُهَاۤ اَلَمْ یَاْتِكُمْ نَذِیْرٌ (8)</span>
+
+  <span>قَالُوْا بَلٰى قَدْ جَآءَنَا نَذِیْرٌ ﳔ فَكَذَّبْنَا وَ قُلْنَا مَا نَزَّلَ اللّٰهُ مِنْ شَیْءٍ ۚۖ-اِنْ اَنْتُمْ اِلَّا فِیْ ضَلٰلٍ كَبِیْرٍ (9)</span>
+
+  <span>وَ قَالُوْا لَوْ كُنَّا نَسْمَعُ اَوْ نَعْقِلُ مَا كُنَّا فِیْۤ اَصْحٰبِ السَّعِیْرِ (10)</span>
+
+  <span>فَاعْتَرَفُوْا بِذَنْۢبِهِمْۚ-فَسُحْقًا لِّاَصْحٰبِ السَّعِیْرِ (11)</span>
+
+  <span>اِنَّ الَّذِیْنَ یَخْشَوْنَ رَبَّهُمْ بِالْغَیْبِ لَهُمْ مَّغْفِرَةٌ وَّ اَجْرٌ كَبِیْرٌ (12)</span>
+
+  <span>وَ اَسِرُّوْا قَوْلَكُمْ اَوِ اجْهَرُوْا بِهٖؕ-اِنَّهٗ عَلِیْمٌۢ بِذَاتِ الصُّدُوْرِ (13)</span>
+
+  <span>اَلَا یَعْلَمُ مَنْ خَلَقَؕ-وَ هُوَ اللَّطِیْفُ الْخَبِیْرُ۠ (14)</span>
+
+  <span>هُوَ الَّذِیْ جَعَلَ لَكُمُ الْاَرْضَ ذَلُوْلًا فَامْشُوْا فِیْ مَنَاكِبِهَا وَ كُلُوْا مِنْ رِّزْقِهٖؕ-وَ اِلَیْهِ النُّشُوْرُ (15)</span>
+
+  <span>ءَاَمِنْتُمْ مَّنْ فِی السَّمَآءِ اَنْ یَّخْسِفَ بِكُمُ الْاَرْضَ فَاِذَا هِیَ تَمُوْرُۙ (16)</span>
+
+  <span>اَمْ اَمِنْتُمْ مَّنْ فِی السَّمَآءِ اَنْ یُّرْسِلَ عَلَیْكُمْ حَاصِبًاؕ-فَسَتَعْلَمُوْنَ كَیْفَ نَذِیْرِ (17)</span>
+
+  <span>وَ لَقَدْ كَذَّبَ الَّذِیْنَ مِنْ قَبْلِهِمْ فَكَیْفَ كَانَ نَكِیْرِ (18)</span>
+
+  <span>اَوَ لَمْ یَرَوْا اِلَى الطَّیْرِ فَوْقَهُمْ صٰٓفّٰتٍ وَّ یَقْبِضْنَﰉ مَا یُمْسِكُهُنَّ اِلَّا الرَّحْمٰنُؕ-اِنَّهٗ بِكُلِّ شَیْءٍۭ بَصِیْرٌ (19)</span>
+
+  <span>اَمَّنْ هٰذَا الَّذِیْ هُوَ جُنْدٌ لَّكُمْ یَنْصُرُكُمْ مِّنْ دُوْنِ الرَّحْمٰنِؕ-اِنِ الْكٰفِرُوْنَ اِلَّا فِیْ غُرُوْرٍۚ (20)</span>
+
+  <span>اَمَّنْ هٰذَا الَّذِیْ یَرْزُقُكُمْ اِنْ اَمْسَكَ رِزْقَهٗۚ-بَلْ لَّجُّوْا فِیْ عُتُوٍّ وَّ نُفُوْرٍ (21)</span>
+
+  <span>اَفَمَنْ یَّمْشِیْ مُكِبًّا عَلٰى وَجْهِهٖۤ اَهْدٰۤى اَمَّنْ یَّمْشِیْ سَوِیًّا عَلٰى صِرَاطٍ مُّسْتَقِیْمٍ (22)</span>
+
+  <span>قُلْ هُوَ الَّذِیْۤ اَنْشَاَ كُمْ وَ جَعَلَ لَكُمُ السَّمْعَ وَ الْاَبْصَارَ وَ الْاَفْـٕدَةَؕ-قَلِیْلًا مَّا تَشْكُرُوْنَ (23)</span>
+
+  <span>قُلْ هُوَ الَّذِیْ ذَرَاَكُمْ فِی الْاَرْضِ وَ اِلَیْهِ تُحْشَرُوْنَ (24)</span>
+
+  <span>وَ یَقُوْلُوْنَ مَتٰى هٰذَا الْوَعْدُ اِنْ كُنْتُمْ صٰدِقِیْنَ (25)</span>
+
+  <span>قُلْ اِنَّمَا الْعِلْمُ عِنْدَ اللّٰهِ۪-وَ اِنَّمَاۤ اَنَا نَذِیْرٌ مُّبِیْنٌ (26)</span>
+
+  <span>فَلَمَّا رَاَوْهُ زُلْفَةً سِیْٓــٴَـتْ وُجُوْهُ الَّذِیْنَ كَفَرُوْا وَ قِیْلَ هٰذَا الَّذِیْ كُنْتُمْ بِهٖ تَدَّعُوْنَ (27)</span>
+
+  <span>قُلْ اَرَءَیْتُمْ اِنْ اَهْلَكَنِیَ اللّٰهُ وَ مَنْ مَّعِیَ اَوْ رَحِمَنَاۙ-فَمَنْ یُّجِیْرُ الْكٰفِرِیْنَ مِنْ عَذَابٍ اَلِیْمٍ (28)</span>
+
+  <span>قُلْ هُوَ الرَّحْمٰنُ اٰمَنَّا بِهٖ وَ عَلَیْهِ تَوَكَّلْنَاۚ-فَسَتَعْلَمُوْنَ مَنْ هُوَ فِیْ ضَلٰلٍ مُّبِیْنٍ (29)</span>
+
+  <span>قُلْ اَرَءَیْتُمْ اِنْ اَصْبَحَ مَآؤُكُمْ غَوْرًا فَمَنْ یَّاْتِیْكُمْ بِمَآءٍ مَّعِیْنٍ۠ (30)</span>
+</div>
+
+<!--English Translation-->
+
+<div class="english">
+
+  <span>1. Blessed is the One in Whose Hands rests all authority. And He is Most Capable of everything.</span>
+
+  <span>2. ˹He is the One˺ Who created death and life in order to test which of you is best in deeds. And He is the Almighty, All-Forgiving.</span>
+
+  <span>3. ˹He is the One˺ Who created seven heavens, one above the other. You will never see any imperfection in the creation of the Most Compassionate. So look again: do you see any flaws?</span>
+
+  <span>4. Then look again and again—your sight will return frustrated and weary.</span>
+
+  <span>5. And indeed, We adorned the lowest heaven with ˹stars like˺ lamps, and made them ˹as missiles˺ for stoning ˹eavesdropping˺ devils, for whom We have also prepared the torment of the Blaze.</span>
+
+  <span>6. Those who disbelieve in their Lord will suffer the punishment of Hell. What an evil destination!</span>
+
+  <span>7. When they are tossed into it, they will hear its roaring as it boils over,</span>
+
+  <span>8. almost bursting in fury. Every time a group is cast into it, its keepers will ask them, “Did a warner not come to you?”</span>
+
+  <span>9. They will reply, “Yes, a warner did come to us, but we denied and said, ‘Allah has revealed nothing. You are extremely astray.’”</span>
+
+  <span>10. And they will lament, “If only we had listened and reasoned, we would not be among the residents of the Blaze!”</span>
+
+  <span>11. And so they will confess their sins. So away with the residents of the Blaze!</span>
+
+  <span>12. Indeed, those in awe of their Lord without seeing Him will have forgiveness and a mighty reward.</span>
+
+  <span>13. Whether you speak secretly or openly—He surely knows best what is hidden in the heart.</span>
+
+  <span>14. How could He not know His Own creation? For He alone is the Most Subtle, All-Aware.</span>
+
+  <span>15. He is the One Who smoothed out the earth for you, so move about in its regions and eat from His provisions. And to Him is the resurrection of all.</span>
+
+  <span>16. Do you feel secure that the One Who is in heaven will not cause the earth to swallow you up as it quakes violently?</span>
+
+  <span>17. Or do you feel secure that the One Who is in heaven will not unleash upon you a storm of stones. Only then would you know how serious My warning was!</span>
+
+  <span>18. And certainly those before them denied as well, then how severe was My response!</span>
+
+  <span>19. Have they not seen the birds above them, spreading and folding their wings? None holds them up except the Most Compassionate. Indeed, He is All-Seeing of everything.</span>
+
+  <span>20. Also, which powerless force will come to your help instead of the Most Compassionate? Indeed, the disbelievers are only lost in delusion.</span>
+
+  <span>21. Or who is it that will provide for you if He withholds His provision? In fact, they persist in arrogance and aversion to the truth.</span>
+
+  <span>22. Who is rightly guided: the one who crawls facedown or the one who walks upright on the Straight Path?</span>
+
+  <span>23. Say, ˹O Prophet,˺ “He is the One Who brought you into being and gave you hearing, sight, and intellect. Yet you hardly give any thanks.”</span>
+
+  <span>24. Also say, “He is the One Who has dispersed you all over the earth, and to Him you will all be gathered.”</span>
+
+  <span>25. Still they ask the believers, “When will this threat come to pass, if what you say is true?”</span>
+
+  <span>26. Say, ˹O Prophet,˺ “That knowledge is with Allah alone, and I am only sent with a clear warning.”</span>
+
+  <span>27. Then when they see the torment drawing near, the faces of the disbelievers will become gloomy, and it will be said to them, “This is what you claimed would never come.”</span>
+
+  <span>28. Say, ˹O Prophet,˺ “Consider this: whether Allah causes me and those with me to die or shows us mercy, who will save the disbelievers from a painful punishment?”</span>
+
+  <span>29. Say, “He is the Most Compassionate—in Him alone we believe, and in Him alone we trust. You will soon know who is clearly astray.”</span>
+
+  <span>30. Say, “Consider this: if your water were to sink into the earth, then who else could bring you flowing water?”</span>
+
+</div>
+  <button class="back-btn" onclick="goBack()">← Back Home</button>
+
+</section>
+
+<footer>
+  Made with peace and remembrance of Allah
+</footer>
+
+<script>
+
+function openSurah(id){
+
+  document.getElementById('homeCards').style.display='none';
+
+  let sections=document.querySelectorAll('.surah-section');
+
+  sections.forEach(section=>{
+    section.style.display='none';
+  });
+
+  document.getElementById(id).style.display='block';
+
+  window.scrollTo({
+    top:0,
+    behavior:'smooth'
+  });
+
+}
+
+function goBack(){
+
+  let sections=document.querySelectorAll('.surah-section');
+
+  sections.forEach(section=>{
+    section.style.display='none';
+  });
+
+  document.getElementById('homeCards').style.display='grid';
+
+  window.scrollTo({
+    top:0,
+    behavior:'smooth'
+  });
+
+}
+
+function toggleLanguage(id){
+
+  const section=document.getElementById(id);
+
+  const arabic=section.querySelector('.arabic');
+  const english=section.querySelector('.english');
+
+  if(english.style.display==='block'){
+
+    english.style.display='none';
+    arabic.style.display='block';
+
+  }else{
+
+    english.style.display='block';
+    arabic.style.display='none';
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
